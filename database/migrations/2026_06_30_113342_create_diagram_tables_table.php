@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('diagram_tables', function (Blueprint $table) {
             $table->id();
+
+            $table->foreignId('project_id')
+                ->constrained()
+                ->cascadeOnDelete();
+
+            $table->string('name');
+
+            $table->string('color')->default('#3B82F6');
+            $table->string('icon')->nullable();
+            $table->text('note')->nullable();
+
+            $table->double('position_x')->default(0);
+            $table->double('position_y')->default(0);
+
             $table->timestamps();
         });
     }
