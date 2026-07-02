@@ -12,6 +12,7 @@ class Relationship extends Model
         'source_column_id',
         'target_table_id',
         'target_column_id',
+        'type',
     ];
 
     protected $casts = [

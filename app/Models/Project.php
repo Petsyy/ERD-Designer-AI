@@ -19,8 +19,8 @@ class Project extends Model
     ];
 
     protected $casts = [
-        'canvas_x' => 'float',
-        'canvas_y' => 'float',
+        'canvas_x' => 'double',
+        'canvas_y' => 'double',
         'zoom' => 'float',
         'deleted_at' => 'datetime',
         'last_opened_at' => 'datetime',
@@ -32,4 +32,15 @@ class Project extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function diagramTables()
+    {
+        return $this->hasMany(DiagramTable::class);
+    }
+
+    public function relationships()
+    {
+        return $this->hasMany(Relationship::class);
+    }
+
 }

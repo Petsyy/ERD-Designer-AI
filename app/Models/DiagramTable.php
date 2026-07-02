@@ -10,6 +10,8 @@ class DiagramTable extends Model
         'project_id',
         'name',
         'color',
+        'icon',
+        'note',
         'position_x',
         'position_y',
     ];
@@ -24,5 +26,10 @@ class DiagramTable extends Model
     public function project()
     {
         return $this->belongsTo(Project::class);
+    }
+
+    public function diagramColumns()
+    {
+        return $this->hasMany(DiagramColumn::class, 'diagram_table_id');
     }
 }

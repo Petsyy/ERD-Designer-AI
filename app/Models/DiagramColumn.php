@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class DiagramColumn extends Model
 {
     protected $fillable = [
-        'table_id',
+        'diagram_table_id',
         'name',
         'data_type',
         'length',

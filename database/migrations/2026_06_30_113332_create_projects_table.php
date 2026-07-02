@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
 
-            $table->integer('canvas_x')->default(0);
-            $table->integer('canvas_y')->default(0);
+            $table->double('canvas_x')->default(0);
+            $table->double('canvas_y')->default(0);
             $table->decimal('zoom', 3, 2)->default(1.00);
 
             $table->string('thumbnail')->nullable();
