@@ -1,6 +1,10 @@
 import React from "react";
 import { useForm, Link } from "@inertiajs/react";
-import AuthLayout from "../../components/auth-layout";
+import { Loader2, ArrowRight } from "lucide-react";
+import AuthLayout from "@/components/auth-layout";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 export default function Register() {
     const { data, setData, post, errors, processing } = useForm({
@@ -13,6 +17,7 @@ export default function Register() {
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         post("/register", {
+            replace: true,
             onSuccess: () => {
                 setData("password", "");
                 setData("password_confirmation", "");
@@ -23,28 +28,26 @@ export default function Register() {
     return (
         <AuthLayout
             title="Create account"
-            subtitle="Sign up to start building database schemas"
+            subtitle="Start designing database architectures in minutes"
         >
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-3.5">
                 {/* Full Name Field */}
                 <div className="space-y-1.5">
-                    <label
-                        htmlFor="name"
-                        className="block text-xs font-medium text-zinc-500 dark:text-zinc-400"
-                    >
+                    <Label htmlFor="name" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                         Full Name
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                         id="name"
                         type="text"
                         value={data.name}
                         onChange={(e) => setData("name", e.target.value)}
                         required
-                        placeholder="Peter"
-                        className="w-full rounded-lg border border-zinc-200 bg-transparent px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-0 dark:border-zinc-800 dark:text-zinc-50 dark:placeholder:text-zinc-600 dark:focus:border-zinc-100 transition-colors"
+                        autoFocus
+                        placeholder="Enter your full name"
+                        className="h-9 text-xs"
                     />
                     {errors.name && (
-                        <p className="text-xs font-medium text-red-500">
+                        <p className="text-[11px] font-medium text-red-500">
                             {errors.name}
                         </p>
                     )}
@@ -52,23 +55,20 @@ export default function Register() {
 
                 {/* Email Field */}
                 <div className="space-y-1.5">
-                    <label
-                        htmlFor="email"
-                        className="block text-xs font-semibold text-zinc-500 dark:text-zinc-400"
-                    >
+                    <Label htmlFor="email" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                         Email Address
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                         id="email"
                         type="email"
                         value={data.email}
                         onChange={(e) => setData("email", e.target.value)}
                         required
-                        placeholder="you@example.com"
-                        className="w-full rounded-lg border border-zinc-200 bg-transparent px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-0 dark:border-zinc-800 dark:text-zinc-50 dark:placeholder:text-zinc-600 dark:focus:border-zinc-100 transition-colors"
+                        placeholder="Enter your email address"
+                        className="h-9 text-xs"
                     />
                     {errors.email && (
-                        <p className="text-xs font-medium text-red-500">
+                        <p className="text-[11px] font-medium text-red-500">
                             {errors.email}
                         </p>
                     )}
@@ -76,23 +76,20 @@ export default function Register() {
 
                 {/* Password Field */}
                 <div className="space-y-1.5">
-                    <label
-                        htmlFor="password"
-                        className="block text-xs font-medium text-zinc-500 dark:text-zinc-400"
-                    >
+                    <Label htmlFor="password" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
                         Password
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                         id="password"
                         type="password"
                         value={data.password}
                         onChange={(e) => setData("password", e.target.value)}
                         required
-                        placeholder="At least 8 characters"
-                        className="w-full rounded-lg border border-zinc-200 bg-transparent px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-0 dark:border-zinc-800 dark:text-zinc-50 dark:placeholder:text-zinc-600 dark:focus:border-zinc-100 transition-colors"
+                        placeholder="Create a password (min. 8 characters)"
+                        className="h-9 text-xs"
                     />
                     {errors.password && (
-                        <p className="text-xs font-medium text-red-500">
+                        <p className="text-[11px] font-medium text-red-500">
                             {errors.password}
                         </p>
                     )}
@@ -100,13 +97,13 @@ export default function Register() {
 
                 {/* Confirm Password Field */}
                 <div className="space-y-1.5">
-                    <label
+                    <Label
                         htmlFor="password_confirmation"
-                        className="block text-xs font-medium text-zinc-500 dark:text-zinc-400"
+                        className="text-xs font-medium text-zinc-700 dark:text-zinc-300"
                     >
                         Confirm Password
-                    </label>
-                    <input
+                    </Label>
+                    <Input
                         id="password_confirmation"
                         type="password"
                         value={data.password_confirmation}
@@ -114,32 +111,33 @@ export default function Register() {
                             setData("password_confirmation", e.target.value)
                         }
                         required
-                        placeholder="Repeat password"
-                        className="w-full rounded-lg border border-zinc-200 bg-transparent px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-0 dark:border-zinc-800 dark:text-zinc-50 dark:placeholder:text-zinc-600 dark:focus:border-zinc-100 transition-colors"
+                        placeholder="Confirm your password"
+                        className="h-9 text-xs"
                     />
                 </div>
 
                 {/* Submit Button */}
-                <button
+                <Button
                     type="submit"
                     disabled={processing}
-                    className="w-full mt-2 flex items-center justify-center rounded-lg bg-zinc-900 py-2.5 text-sm font-medium text-zinc-50 hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors"
+                    className="w-full h-9 mt-3 text-xs font-medium gap-2 shadow-sm"
                 >
-                    {processing ? "Creating account..." : "Create account"}
-                </button>
+                    {processing && (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    )}
+                    <span>{processing ? "Creating account..." : "Get Started"}</span>
+                    {!processing && <ArrowRight className="w-3.5 h-3.5" />}
+                </Button>
             </form>
 
-            {/* Navigation link */}
-            <div className="mt-6 text-center">
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Already have an account?{" "}
-                    <Link
-                        href="/login"
-                        className="font-medium text-zinc-900 hover:underline dark:text-zinc-100"
-                    >
-                        Sign in
-                    </Link>
-                </p>
+            <div className="mt-8 pt-4 border-t border-zinc-100 dark:border-zinc-900 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 gap-2">
+                <span>Already have an account?</span>
+                <Link
+                    href="/login"
+                    className="font-semibold text-zinc-900 hover:underline dark:text-zinc-100"
+                >
+                    Sign in &rarr;
+                </Link>
             </div>
         </AuthLayout>
     );

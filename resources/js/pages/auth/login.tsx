@@ -1,6 +1,11 @@
 import React from "react";
 import { useForm, Link } from "@inertiajs/react";
+import { Loader2, ArrowRight } from "lucide-react";
 import AuthLayout from "../../components/auth-layout";
+import { Input } from "../../components/ui/input";
+import { Label } from "../../components/ui/label";
+import { Button } from "../../components/ui/button";
+import { Checkbox } from "../../components/ui/checkbox";
 
 export default function Login() {
     const { data, setData, post, errors, processing } = useForm({
@@ -12,7 +17,9 @@ export default function Login() {
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         post("/login", {
+            replace: true,
             onSuccess: () => {
+                localStorage.setItem("is_authenticated", "true");
                 setData("password", "");
             },
         });
@@ -20,29 +27,27 @@ export default function Login() {
 
     return (
         <AuthLayout
-            title="Sign in"
-            subtitle="Enter your credentials to access your dashboard"
+            title="Sign In"
+            subtitle="Enter your credentials to access your workspace"
         >
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Email Field */}
                 <div className="space-y-1.5">
-                    <label
-                        htmlFor="email"
-                        className="block text-xs font-medium text-zinc-500 dark:text-zinc-400"
-                    >
-                        Email
-                    </label>
-                    <input
+                    <Label htmlFor="email" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                        Email Address
+                    </Label>
+                    <Input
                         id="email"
                         type="email"
                         value={data.email}
                         onChange={(e) => setData("email", e.target.value)}
                         required
-                        placeholder="you@example.com"
-                        className="w-full rounded-lg border border-zinc-200 bg-transparent px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-0 dark:border-zinc-800 dark:text-zinc-50 dark:placeholder:text-zinc-600 dark:focus:border-zinc-100 transition-colors"
+                        autoFocus
+                        placeholder="Enter your email address"
+                        className="h-9 text-xs"
                     />
                     {errors.email && (
-                        <p className="text-xs font-medium text-red-500">
+                        <p className="text-[11px] font-medium text-red-500">
                             {errors.email}
                         </p>
                     )}
@@ -50,65 +55,66 @@ export default function Login() {
 
                 {/* Password Field */}
                 <div className="space-y-1.5">
-                    <label
-                        htmlFor="password"
-                        className="block text-xs font-medium text-zinc-500 dark:text-zinc-400"
-                    >
-                        Password
-                    </label>
-                    <input
+                    <div className="flex items-center justify-between">
+                        <Label htmlFor="password" className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                            Password
+                        </Label>
+                    </div>
+                    <Input
                         id="password"
                         type="password"
                         value={data.password}
                         onChange={(e) => setData("password", e.target.value)}
                         required
-                        placeholder="••••••••"
-                        className="w-full rounded-lg border border-zinc-200 bg-transparent px-3 py-2 text-sm text-zinc-900 placeholder:text-zinc-400 focus:border-zinc-900 focus:outline-none focus:ring-0 dark:border-zinc-800 dark:text-zinc-50 dark:placeholder:text-zinc-600 dark:focus:border-zinc-100 transition-colors"
+                        placeholder="Enter your password"
+                        className="h-9 text-xs"
                     />
                     {errors.password && (
-                        <p className="text-xs font-medium text-red-500">
+                        <p className="text-[11px] font-medium text-red-500">
                             {errors.password}
                         </p>
                     )}
                 </div>
 
                 {/* Remember Me */}
-                <div className="flex items-center">
-                    <input
+                <div className="flex items-center space-x-2 pt-1">
+                    <Checkbox
                         id="remember"
-                        type="checkbox"
                         checked={data.remember}
-                        onChange={(e) => setData("remember", e.target.checked)}
-                        className="h-4 w-4 rounded border-zinc-300 text-zinc-900 focus:ring-0 dark:border-zinc-700 dark:bg-zinc-900 dark:checked:bg-zinc-50"
+                        onCheckedChange={(checked) =>
+                            setData("remember", checked === true)
+                        }
                     />
-                    <label
+                    <Label
                         htmlFor="remember"
-                        className="ml-2 text-xs text-zinc-600 dark:text-zinc-400 cursor-pointer select-none"
+                        className="text-xs text-zinc-600 dark:text-zinc-400 cursor-pointer font-normal leading-none"
                     >
-                        Keep me signed in
-                    </label>
+                        Remember me
+                    </Label>
                 </div>
 
                 {/* Submit Button */}
-                <button
+                <Button
                     type="submit"
                     disabled={processing}
-                    className="w-full flex items-center justify-center rounded-lg bg-zinc-900 py-2.5 text-sm font-medium text-zinc-50 hover:bg-zinc-800 disabled:opacity-50 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 transition-colors"
+                    className="w-full h-9 mt-2 text-xs font-medium gap-2 shadow-sm"
                 >
-                    {processing ? "Signing in..." : "Sign in"}
-                </button>
+                    {processing && (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    )}
+                    <span>{processing ? "Signing in..." : "Sign in"}</span>
+                    {!processing && <ArrowRight className="w-3.5 h-3.5" />}
+                </Button>
             </form>
 
-            <div className="mt-6 text-center">
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Don't have an account?{" "}
-                    <Link
-                        href="/register"
-                        className="font-medium text-zinc-900 hover:underline dark:text-zinc-100"
-                    >
-                        Create account
-                    </Link>
-                </p>
+            <div className="mt-8 pt-4 border-t border-zinc-100 dark:border-zinc-900 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 dark:text-zinc-400 gap-2">
+                <span>Don't have an account?</span>
+                <Link
+                    href="/register"
+                    className="font-semibold text-zinc-900 hover:underline dark:text-zinc-100"
+                >
+                    Create account &rarr;
+                </Link>
             </div>
         </AuthLayout>
     );
