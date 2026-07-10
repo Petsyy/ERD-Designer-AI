@@ -3,24 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Policies\ProjectPolicy;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 
+
 class ProjectController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Display a listing of the projects.
      */
     public function index(Request $request)
     {
-        $projects = $request->user()
+        $projects = $request
+            ->user()
             ->projects()
             ->latest('last_opened_at')
             ->get();
 
-        return inertia('dashboard/dashboard', [
+        return inertia('project/project-dashboard', [
             'projects' => $projects,
         ]);
     }
@@ -48,15 +54,7 @@ class ProjectController extends Controller
      */
     public function show(Request $request, Project $project)
     {
-        if ($project->user_id !== $request->user()->id) {
-            abort(403);
-        }
-
-        $project->update(['last_opened_at' => now()]);
-
-        return inertia('workspace/workspace', [
-            'project' => $project->load(['diagramTables.diagramColumns', 'relationships']),
-        ]);
+        return redirect()->route('workspace', $project);
     }
 
     /**
@@ -64,9 +62,7 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        if ($project->user_id !== $request->user()->id) {
-            abort(403);
-        }
+        $this->authorize('update', $project);
 
         $validated = $request->validated();
 
@@ -80,9 +76,7 @@ class ProjectController extends Controller
      */
     public function destroy(Request $request, Project $project)
     {
-        if ($project->user_id !== $request->user()->id) {
-            abort(403);
-        }
+        $this->authorize('delete', $project);
 
         $project->delete();
 

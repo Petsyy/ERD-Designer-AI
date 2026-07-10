@@ -6,6 +6,7 @@ export interface DiagramColumn {
     length: number | null;
     scale: number | null;
     is_primary: boolean;
+    is_foreign?: boolean;
     is_nullable: boolean;
     is_unique: boolean;
     is_unsigned: boolean;
@@ -27,6 +28,7 @@ export interface DiagramTable {
     position_x: number;
     position_y: number;
     diagram_columns: DiagramColumn[];
+    diagramColumns?: DiagramColumn[];
     created_at?: string;
     updated_at?: string;
 }
@@ -38,6 +40,9 @@ export interface Relationship {
     target_table_id: number;
     source_column_id: number;
     target_column_id: number;
+    relationship_type: 'one_to_one' | 'one_to_many' | 'many_to_one' | 'many_to_many';
+    on_delete?: 'CASCADE' | 'SET NULL' | 'RESTRICT' | 'NO ACTION' | 'SET DEFAULT' | null;
+    on_update?: 'CASCADE' | 'SET NULL' | 'RESTRICT' | 'NO ACTION' | 'SET DEFAULT' | null;
     source_table?: DiagramTable;
     target_table?: DiagramTable;
     source_column?: DiagramColumn;

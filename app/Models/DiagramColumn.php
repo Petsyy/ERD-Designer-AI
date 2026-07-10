@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Relationship;
 
 class DiagramColumn extends Model
 {
@@ -34,6 +35,16 @@ class DiagramColumn extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime'
     ];
+
+    protected $appends = ['is_foreign'];
+
+    public function getIsForeignAttribute(): bool
+    {
+        if (isset($this->attributes['is_foreign']) && $this->attributes['is_foreign']) {
+            return true;
+        }
+        return Relationship::where('target_column_id', $this->id)->exists();
+    }
 
     public function table()
     {

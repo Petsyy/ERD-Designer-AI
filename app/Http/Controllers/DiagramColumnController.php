@@ -19,13 +19,6 @@ class DiagramColumnController extends Controller
 
             'is_primary' => ['boolean'],
             'is_foreign' => ['boolean'],
-            'is_nullable' => ['boolean'],
-            'is_unique' => ['boolean'],
-            'is_unsigned' => ['boolean'],
-            'is_auto_increment' => ['boolean'],
-
-            'default_value' => ['nullable', 'string'],
-            'comment' => ['nullable', 'string'],
         ]);
 
         $column = $diagramTable

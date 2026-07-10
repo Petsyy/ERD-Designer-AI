@@ -33,7 +33,6 @@ return new class extends Migration
             $table->boolean('is_auto_increment')->default(false);
 
             $table->string('default_value')->nullable();
-            
             $table->text('comment')->nullable();
 
             $table->integer('sort_order')->default(0);

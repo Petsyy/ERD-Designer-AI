@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\RelationshipType;
 
 class Relationship extends Model
 {
@@ -12,7 +13,9 @@ class Relationship extends Model
         'source_column_id',
         'target_table_id',
         'target_column_id',
-        'type',
+        'relationship_type',
+        'on_delete',
+        'on_update',
     ];
 
     protected $casts = [
@@ -20,6 +23,7 @@ class Relationship extends Model
         'source_column_id' => 'integer',
         'target_table_id' => 'integer',
         'target_column_id' => 'integer',
+        'relationship_type' => RelationshipType::class,
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -29,22 +33,22 @@ class Relationship extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function sourceDiagramTable()
+    public function sourceTable()
     {
         return $this->belongsTo(DiagramTable::class, 'source_table_id');
     }
 
-    public function targetDiagramTable()
+    public function targetTable()
     {
         return $this->belongsTo(DiagramTable::class, 'target_table_id');
     }
     
-    public function targetDiagramColumn()
+    public function targetColumn()
     {
         return $this->belongsTo(DiagramColumn::class, 'target_column_id');
     }
 
-    public function sourceDiagramColumn()
+    public function sourceColumn()
     {
         return $this->belongsTo(DiagramColumn::class, 'source_column_id');
     }

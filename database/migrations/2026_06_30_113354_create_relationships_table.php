@@ -34,12 +34,20 @@ return new class extends Migration
                 ->constrained('diagram_columns')
                 ->cascadeOnDelete();
 
-            $table->enum('type', [
+            $table->enum('relationship_type', [
                 'one_to_one',
                 'one_to_many',
                 'many_to_one',
                 'many_to_many',
             ]);
+
+            $table->enum('on_delete', [
+                'CASCADE', 'SET NULL', 'RESTRICT', 'NO ACTION', 'SET DEFAULT',
+            ])->default('CASCADE');
+
+            $table->enum('on_update', [
+                'CASCADE', 'SET NULL', 'RESTRICT', 'NO ACTION', 'SET DEFAULT',
+            ])->default('CASCADE');
 
             $table->timestamps();
         });
